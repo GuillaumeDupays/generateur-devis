@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Item} from "./item";
+import Item from "./item";
 
 class DevisForm extends Component {
     state = {
@@ -15,13 +15,24 @@ class DevisForm extends Component {
         console.log(this, items);
         items[id] = {
             id: id,
-            description: 'description',
-            quantite: 4,
-            taxe: 0.8,
+            description: '',
+            quantite: 0,
+            taxe: 0,
             amount: 0
         };
         this.setState({ items: items});
     }
+    handleItemChange = (evt, item, field) => {
+        console.log(evt.currentTarget.value, item, field)
+        const value = evt.currentTarget.value;
+        const clonedItem = {...item};
+        clonedItem[field] = value;
+        const cloneItems = {...this.state.items};
+        cloneItems[clonedItem.id] = clonedItem;
+        this.setState({
+            items: cloneItems
+        });
+}
     handleSubmit = evt => {
         evt.preventDefault();
         console.log('devis généré')
@@ -44,7 +55,7 @@ class DevisForm extends Component {
                         <input value={this.state.nomClient} onChange={evt => this.handleChange(evt, 'nomClient')} type="text" name="nomClient" id="nomClient" placeholder="nom du client" /><br/>
                         <button onClick={this.addItem}>Ajouter une ligne</button>
                         {Object.keys(this.state.items).map((itemId, index) => (
-                            <Item key={index} item={this.state.items[itemId]} />
+                            <Item key={index} item={this.state.items[itemId]} onItemChange={this.handleItemChange}/>
                             ))}
                         <button type="submit">Générer le devis</button>
                     </form>
