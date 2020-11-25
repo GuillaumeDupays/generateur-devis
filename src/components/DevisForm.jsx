@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Item from "./item";
 import {renderPDFInDOM} from "./pdfMaker";
+import InputText from "./inputText";
 
 class DevisForm extends Component {
     state = {
@@ -17,7 +18,7 @@ class DevisForm extends Component {
         items[id] = {
             id: id,
             description: '',
-            quantite: '',
+            quantite: 1,
             taxe: 5.5,
             amount: 0
         };
@@ -48,24 +49,36 @@ class DevisForm extends Component {
                 <div>
                     <h2>Nouveau devis</h2>
                     <form onSubmit={this.handleSubmit}>
-                        <input value={this.state.id} onChange={evt => this.handleChange(evt, 'id')}
-                               type="text" name="id" id="titre-devis" placeholder="identifiant client" />
-                               <br/>
-                        <input value={this.state.titre} onChange={evt => this.handleChange(evt, 'titre')}
-                               type="text" name="titre-devis" id="titre-devis" placeholder="titre du devis" />
-                               <br/>
-                        <input value={this.state.prenomClient} onChange={evt => this.handleChange(evt, 'prenomClient')}
-                               type="text" name="prenomClient" id="prenomClient" placeholder="prenom du client" />
-                               <br/>
-                        <input value={this.state.nomClient} onChange={evt => this.handleChange(evt, 'nomClient')}
-                               type="text" name="nomClient" id="nomClient" placeholder="nom du client" />
-                               <br/>
+                        <InputText
+                            label="ID"
+                            name="id"
+                            value={this.state.id}
+                            onChange={this.handleChange}
+                        />
+                        <InputText
+                            label="titre"
+                            name="titre"
+                            value={this.state.titre}
+                            onChange={this.handleChange}
+                        />
+                        <InputText
+                            label="prenomClient"
+                            name="prenomClient"
+                            value={this.state.prenomClient}
+                            onChange={this.handleChange}
+                        />
+                        <InputText
+                            label="nomClient"
+                            name="nomClient"
+                            value={this.state.nomClient}
+                            onChange={this.handleChange}
+                        />
                         <button onClick={this.addItem}>Ajouter une ligne</button>
 
                         {Object.keys(this.state.items).map((itemId, index) => (
                             <Item key={index} item={this.state.items[itemId]} onItemChange={this.handleItemChange}/>
                             ))}
-                        <button onClick={() => renderPDFInDOM(JSON.stringify(this.state))}>Générer le devis</button>
+                        <button onClick={() => renderPDFInDOM(this.state)}>Générer le devis</button>
                     </form>
                 </div>
             </React.Fragment>
