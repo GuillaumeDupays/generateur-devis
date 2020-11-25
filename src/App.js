@@ -1,7 +1,7 @@
 
 import './App.css';
 import Info from "./components/info";
-import {Component} from "react";
+import React, {Component} from "react";
 import DevisForm from "./components/DevisForm";
 
 class App extends Component {
